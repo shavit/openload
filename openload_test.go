@@ -5,6 +5,13 @@ import (
   "os"
 )
 
+func newTestOpenLoad() (ol Openload){
+  var login string = os.Getenv("OPENLOAD_API_LOGIN")
+  var key string = os.Getenv("OPENLOAD_API_KEY")
+
+  return NewOpenload(key, login)
+}
+
 func TestCreateOpenload(t *testing.T){
   var login string = os.Getenv("OPENLOAD_API_LOGIN")
   var key string = os.Getenv("OPENLOAD_API_KEY")
@@ -17,7 +24,7 @@ func TestCreateOpenload(t *testing.T){
     t.Error("OPENLOAD_API_KEY is not defined")
   }
 
-  ol = NewOpenload(key, login)
+  ol = newTestOpenLoad()
   if ol == nil {
     t.Error("Error creating Openload")
   }

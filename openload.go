@@ -12,6 +12,48 @@ type Openload interface {
 
   // SetProxy set a proxy URL
   SetProxy(u string) (err error)
+
+  // AccountInfo get the account info
+  AccountInfo() (a *account, err error)
+
+  // GetDownloadTicket preparing a download
+  GetDownloadTicket(fileId string) (tckt *ticket, err error)
+
+  // GetDownloadLink get a download link by using a download ticket
+  GetDownloadLink(fileId string, tckt *ticket, captcha string) (downld *download, err error)
+
+  // GetFileInfo check the status of a file
+  GetFileInfo(fileId string) (file *file, err error)
+
+  // Upload upload a file and get the upload URL
+  Upload(folderId string, sha1 string) (u string, err error)
+
+  // RemoteUpload remote upload a file
+  RemoteUpload(folderId string, url string) (err error)
+
+  // GetUploadLimit check status of a remote upload
+  GetUploadLimit(id string, maxResults int) (upload *uploadMeta, err error)
+
+  // ListFolder shows teh content of your folders
+  ListFolder(folderId string) (folders []*folder, files []*file, err error)
+
+  // RenameFolder set a new name for an existing folder
+  RenameFolder(folderId string, name string) (err error)
+
+  // RenameFile set a new name for a file
+  RenameFile(fileId string, name string) (err error)
+
+  // DeleteFile remove an existing file
+  DeleteFile(fileId string) (err error)
+
+  // ConvertFile convert previously uploaded files to mp4
+  ConvertFile(fileId string) (err error)
+
+  // GetFolderConverts get the running file converts by folder
+  GetFolderConverts(folderId string) (status *convertStatus, err error)
+
+  // GetSplashImage get the the video thumbnail
+  GetSplashImage(fileId string) (url string, err error)
 }
 
 type openload struct {
