@@ -15,8 +15,12 @@ func TestCreateAccount(t *testing.T){
 func TestAccoutInfo(t *testing.T){
   var ol Openload = newTestOpenLoad()
 
-  _, err := ol.AccountInfo()
+  a, err := ol.AccountInfo()
   if err != nil {
     t.Error("Error getting account info", err)
+  }
+
+  if a.Extid == "" {
+    t.Error("Error getting the account info")
   }
 }

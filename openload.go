@@ -1,14 +1,24 @@
 package openload
 
 import (
+  "errors"
+  "fmt"
+  "golang.org/x/net/proxy"
+  "io/ioutil"
+  "encoding/json"
   "net/http"
   "net/url"
-  "golang.org/x/net/proxy"
 )
+
+type response struct {
+  Status int `json: "status"`
+  Msg string `json: "msg"`
+  Result interface{} `json: "result"`
+}
 
 type Openload interface {
   // get make a GET request to the API
-  get(endpoint string) (resp *http.Response, err error)
+  get(endpoint string) (resp *response, err error)
 
   // SetProxy set a proxy URL
   SetProxy(u string) (err error)
@@ -72,8 +82,28 @@ func NewOpenload(login, key string) Openload {
 }
 
 // get make a GET request to the API
-func (ol *openload) get(endpoint string) (resp *http.Response, err error) {
-  return ol.client.Get("https://api.openload.co/1" + endpoint)
+func (ol *openload) get(endpoint string) (resp *response, err error) {
+  var res *http.Response
+  var body []byte
+  resp = new(response)
+
+  res, err = ol.client.Get("https://api.openload.co/1" + endpoint)
+  if err != nil {
+    return resp, err
+  }
+  defer res.Body.Close()
+
+  if res.StatusCode != 200 {
+    return resp, errors.New(fmt.Sprintf("Service unavailable got status code ", res.StatusCode))
+  }
+
+  body, err = ioutil.ReadAll(res.Body)
+  if err != nil {
+    return resp, err
+  }
+  err = json.Unmarshal(body, &resp)
+
+  return resp, err
 }
 
 // SetProxy set a proxy URL

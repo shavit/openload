@@ -9,7 +9,7 @@ func newTestOpenLoad() (ol Openload){
   var login string = os.Getenv("OPENLOAD_API_LOGIN")
   var key string = os.Getenv("OPENLOAD_API_KEY")
 
-  return NewOpenload(key, login)
+  return NewOpenload(login, key)
 }
 
 func TestCreateOpenload(t *testing.T){
