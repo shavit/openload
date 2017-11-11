@@ -22,3 +22,17 @@ func TestCreateOpenload(t *testing.T){
     t.Error("Error creating Openload")
   }
 }
+
+func TestSetProxy(t *testing.T) {
+  var _ol Openload = NewOpenload("key", "login")
+  ol, ok := _ol.(*openload)
+  if ok == false {
+    t.Error("Could not switch Openload interface to openload struct")
+  }
+
+
+  err := ol.SetProxy("socks5://127.0.0.1:9050")
+  if err != nil {
+    t.Error("Error setting a proxy:", err)
+  }
+}

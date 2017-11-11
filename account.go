@@ -13,6 +13,6 @@ type account struct {
   Balance int `json: "balance"`
 }
 
-// func (ol *openload) AccountInfo(){
-//   res, err := ol.get("/account/info?login={login}&key={key}")
-// }
+func (ol *openload) AccountInfo(){
+  res, err := ol.get("/account/info?login={login}&key={key}")
+}
