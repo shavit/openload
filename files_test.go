@@ -6,88 +6,133 @@ import (
 
 func TestGetFileInfo(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var file *file
+  var err error
+  var fileId = ""
 
-  if ol != nil {
-    t.Error("Not implemented")
+  file, err = ol.GetFileInfo(fileId)
+  if err != nil || file != nil {
+    t.Error("Error getting file info:", err.Error())
   }
 }
 
 func TestUpload(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var u string
+  var err error
+  var folderId string = ""
+  var sha1 string = ""
 
-  if ol != nil {
-    t.Error("Not implemented")
+  u, err = ol.Upload(folderId, sha1)
+  if err != nil || u != "" {
+    t.Error("Error uploading from folderId:", err.Error())
   }
 }
 
 func TestRemoteUpload(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var folderId string
+  var url string
+  var err error
 
-  if ol != nil {
-    t.Error("Not implemented")
+  err = ol.RemoteUpload(folderId, url)
+  if err != nil {
+    t.Error("Error creating a remote upload:", err.Error())
   }
 }
 
 func TestGetUploadLimit(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var upload *uploadMeta
+  var err error
+  var id string
+  var maxResults int
 
-  if ol != nil {
-    t.Error("Not implemented")
+  upload, err = ol.GetUploadLimit(id, maxResults)
+  if err != nil || upload != nil {
+    t.Error("Error getting the upload limit:", err.Error())
   }
 }
 
 func TestListFolder(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var folders []*folder
+  var files []*file
+  var err error
+  var folderId string = ""
 
-  if ol != nil {
-    t.Error("Not implemented")
+  folders, files, err = ol.ListFolder(folderId)
+  if err != nil || len(folders) != 0 || len(files) != 0 {
+    t.Error("Error listing folder:", err.Error)
   }
 }
 
 func TestRenameFolder(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var err error
+  var folderId string = ""
+  var name string = ""
 
-  if ol != nil {
-    t.Error("Not implemented")
+  err = ol.RenameFolder(folderId, name)
+  if err != nil {
+    t.Error("Error renaming a folder:", err.Error())
   }
 }
 
 func TestRenameFile(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var err error
+  var fileId string = ""
+  var name string = ""
 
-  if ol != nil {
-    t.Error("Not implemented")
+  err = ol.RenameFile(fileId, name)
+  if err != nil {
+    t.Error("Error renaming a file:", err.Error())
   }
 }
 
 func TestDeleteFile(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var err error
+  var fileId string = ""
 
-  if ol != nil {
-    t.Error("Not implemented")
+  err = ol.DeleteFile(fileId)
+  if err != nil {
+    t.Error("Error deleting a file:", err.Error())
   }
 }
 
 func TestConvertFile(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var err error
+  var fileId string = ""
 
-  if ol != nil {
-    t.Error("Not implemented")
+  ol.ConvertFile(fileId)
+  if err != nil {
+    t.Error("Error converting a file:", err.Error())
   }
 }
 
 func TestGetFolderConverts(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var status *convertStatus
+  var err error
+  var folderId string = ""
 
-  if ol != nil {
-    t.Error("Not implemented")
+  status, err = ol.GetFolderConverts(folderId)
+  if err != nil || status != nil {
+    t.Error("Error getting the runnnig file converts by folder:", err.Error())
   }
 }
 
 func TestGetSplashImage(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var url string
+  var err error
+  var fileId string = ""
 
-  if ol != nil {
-    t.Error("Not implemented")
+  url, err = ol.GetSplashImage(fileId)
+  if err != nil || url != "" {
+    t.Error("Error getting splash image:", err.Error())
   }
 }
