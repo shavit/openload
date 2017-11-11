@@ -18,7 +18,7 @@ type response struct {
 
 type Openload interface {
   // get make a GET request to the API
-  get(endpoint string) (resp *response, err error)
+  get(endpoint string) (body []byte, err error)
 
   // SetProxy set a proxy URL
   SetProxy(u string) (err error)
@@ -82,28 +82,31 @@ func NewOpenload(login, key string) Openload {
 }
 
 // get make a GET request to the API
-func (ol *openload) get(endpoint string) (resp *response, err error) {
+func (ol *openload) get(endpoint string) (body []byte, err error) {
   var res *http.Response
-  var body []byte
+  var resp *response
   resp = new(response)
 
   res, err = ol.client.Get("https://api.openload.co/1" + endpoint)
   if err != nil {
-    return resp, err
+    return body, err
   }
   defer res.Body.Close()
 
   if res.StatusCode != 200 {
-    return resp, errors.New(fmt.Sprintf("Service unavailable got status code ", res.StatusCode))
+    return body, errors.New(fmt.Sprintf("Service unavailable got status code ", res.StatusCode))
   }
 
   body, err = ioutil.ReadAll(res.Body)
   if err != nil {
-    return resp, err
+    return body, err
   }
   err = json.Unmarshal(body, &resp)
+  if err != nil {
+    return body, err
+  }
 
-  return resp, err
+  return json.Marshal(resp.Result)
 }
 
 // SetProxy set a proxy URL

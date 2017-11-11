@@ -19,12 +19,17 @@ type account struct {
 }
 
 func (ol *openload) AccountInfo() (a *account, err error){
-  resp, err := ol.get(fmt.Sprintf("/account/info?login=%v&key=%v", ol.login, ol.key))
-  if err != nil {
-    return a, err
-  }
+  // resp, err := ol.get(fmt.Sprintf("/account/info?login=%v&key=%v", ol.login, ol.key))
+  // if err != nil {
+  //   return a, err
+  // }
 
-  result, err := json.Marshal(resp.Result)
+  // result, err := json.Marshal(resp.Result)
+  // if err != nil {
+  //   return a ,err
+  // }
+
+  result, err := ol.get(fmt.Sprintf("/account/info?login=%v&key=%v", ol.login, ol.key))
   if err != nil {
     return a ,err
   }
