@@ -11,8 +11,12 @@ func TestGetDownloadTicket(t *testing.T){
   var fileId = ""
 
   tickt, err = ol.GetDownloadTicket(fileId)
-  if err != nil || tickt != nil {
+  if err != nil {
     t.Error("Error getting a ticket for file Id", fileId, err.Error())
+  }
+
+  if tickt == nil {
+    t.Error("Found nil ticket for fileId", fileId)
   }
 
 }
