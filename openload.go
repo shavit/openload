@@ -48,16 +48,16 @@ type Openload interface {
   ListFolder(folderId string) (folders []*folder, err error)
 
   // RenameFolder set a new name for an existing folder
-  RenameFolder(folderId string, name string) (err error)
+  RenameFolder(folderId string, name string) (ok bool, err error)
 
   // RenameFile set a new name for a file
-  RenameFile(fileId string, name string) (err error)
+  RenameFile(fileId string, name string) (ok bool, err error)
 
   // DeleteFile remove an existing file
-  DeleteFile(fileId string) (err error)
+  DeleteFile(fileId string) (ok bool, err error)
 
   // ConvertFile convert previously uploaded files to mp4
-  ConvertFile(fileId string) (err error)
+  ConvertFile(fileId string) (ok bool, err error)
 
   // GetFolderConverts get the running file converts by folder
   GetFolderConverts(folderId string) (status *convertStatus, err error)

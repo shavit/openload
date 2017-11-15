@@ -90,47 +90,67 @@ func TestListFolder(t *testing.T){
 
 func TestRenameFolder(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var ok bool
   var err error
   var folderId string = ""
   var name string = ""
 
-  err = ol.RenameFolder(folderId, name)
+  ok, err = ol.RenameFolder(folderId, name)
   if err != nil {
     t.Error("Error renaming a folder:", err.Error())
+  }
+
+  if ok != true {
+    t.Error("Found false while renaming a folder", folderId)
   }
 }
 
 func TestRenameFile(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var ok bool
   var err error
   var fileId string = ""
   var name string = ""
 
-  err = ol.RenameFile(fileId, name)
+  ok, err = ol.RenameFile(fileId, name)
   if err != nil {
     t.Error("Error renaming a file:", err.Error())
+  }
+
+  if ok != true {
+    t.Error("Found false while renaming a file", fileId)
   }
 }
 
 func TestDeleteFile(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var ok bool
   var err error
   var fileId string = ""
 
-  err = ol.DeleteFile(fileId)
+  ok, err = ol.DeleteFile(fileId)
   if err != nil {
     t.Error("Error deleting a file:", err.Error())
+  }
+
+  if ok != true {
+    t.Error("Found false while deleting a file", fileId)
   }
 }
 
 func TestConvertFile(t *testing.T){
   var ol Openload = newTestOpenLoad()
+  var ok bool
   var err error
   var fileId string = ""
 
-  ol.ConvertFile(fileId)
+  ok, err = ol.ConvertFile(fileId)
   if err != nil {
     t.Error("Error converting a file:", err.Error())
+  }
+
+  if ok != true {
+    t.Error("Found false while converting a file", fileId)
   }
 }
 
