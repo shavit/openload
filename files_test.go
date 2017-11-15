@@ -161,8 +161,12 @@ func TestGetFolderConverts(t *testing.T){
   var folderId string = ""
 
   status, err = ol.GetFolderConverts(folderId)
-  if err != nil || status != nil {
+  if err != nil {
     t.Error("Error getting the runnnig file converts by folder:", err.Error())
+  }
+
+  if status == nil {
+    t.Error("Found nil while getting folder converts", folderId)
   }
 }
 
@@ -173,7 +177,11 @@ func TestGetSplashImage(t *testing.T){
   var fileId string = ""
 
   url, err = ol.GetSplashImage(fileId)
-  if err != nil || url != "" {
+  if err != nil {
     t.Error("Error getting splash image:", err.Error())
+  }
+
+  if url == "" {
+    t.Error("Found empty url while getting splash image", fileId)
   }
 }

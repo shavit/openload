@@ -38,7 +38,16 @@ type uploadStatus struct {
   Url string `json: "url"`
 }
 
-type convertStatus struct {}
+type convertStatus struct {
+  Id string `json: "id"`
+  Name string `json: "name"`
+  Status string `json: "status"`
+  LastUpdate string `json: "last_update"`
+  Progress float64 `json: "progress"`
+  Retries int `json: "retries"`
+  Link string `json: "link"`
+  LinkExtid string `json: "linkextid"`
+}
 
 // GetFileInfo check the status of a file
 func (ol *openload) GetFileInfo(fileId string) (files []*file, err error) {
@@ -249,10 +258,46 @@ func (ol *openload) ConvertFile(fileId string) (ok bool, err error) {
 
 // GetFolderConverts get the running file converts by folder
 func (ol *openload) GetFolderConverts(folderId string) (status *convertStatus, err error) {
+  resp, err := ol.get(fmt.Sprintf("/file/runningconverts?login=%v&key=%v&folder=%v", ol.login, ol.key, folderId))
+  if err != nil {
+    return status, err
+  }
+
+  if resp.Status != 200 {
+    return status, errors.New(resp.Msg)
+  }
+
+  body, err := json.Marshal(resp.Result)
+  if err != nil {
+    return status, err
+  }
+
+  if err = json.Unmarshal(body, &status); err != nil {
+    return status, err
+  }
+
   return status, err
 }
 
 // GetSplashImage get the the video thumbnail
 func (ol *openload) GetSplashImage(fileId string) (url string, err error) {
+  resp, err := ol.get(fmt.Sprintf("/file/getsplash?login=%v&key=%v&file=%v", ol.login, ol.key, fileId))
+  if err != nil {
+    return url, err
+  }
+
+  if resp.Status != 200 {
+    return url, errors.New(resp.Msg)
+  }
+
+  body, err := json.Marshal(resp.Result)
+  if err != nil {
+    return url, err
+  }
+
+  if err = json.Unmarshal(body, &url); err != nil {
+    return url, err
+  }
+
   return url, err
 }
