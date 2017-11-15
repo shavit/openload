@@ -6,13 +6,17 @@ import (
 
 func TestGetFileInfo(t *testing.T){
   var ol Openload = newTestOpenLoad()
-  var file *file
+  var files []*file
   var err error
   var fileId = ""
 
-  file, err = ol.GetFileInfo(fileId)
-  if err != nil || file != nil {
+  files, err = ol.GetFileInfo(fileId)
+  if err != nil {
     t.Error("Error getting file info:", err.Error())
+  }
+
+  if len(files) == 0 {
+    t.Error("Found 0 files for fileid", fileId)
   }
 }
 

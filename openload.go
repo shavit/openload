@@ -33,7 +33,7 @@ type Openload interface {
   GetDownloadLink(fileId string, tckt *ticket, captcha string) (downld *download, err error)
 
   // GetFileInfo check the status of a file
-  GetFileInfo(fileId string) (file *file, err error)
+  GetFileInfo(fileId string) (files []*file, err error)
 
   // Upload upload a file and get the upload URL
   Upload(folderId string, sha1 string) (u string, err error)

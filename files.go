@@ -1,6 +1,19 @@
 package openload
 
-type file struct {}
+import (
+  "encoding/json"
+  "errors"
+  "fmt"
+)
+
+type file struct {
+  Id string `json: "id"`
+  Status int `json: "status"`
+  Name string `json: "name"`
+  Size int `json: "size"`
+  Sha1 string `json: "sha1"`
+  ContentType string `json: "content_type"`
+}
 
 type folder struct {}
 
@@ -9,8 +22,26 @@ type uploadMeta struct {}
 type convertStatus struct {}
 
 // GetFileInfo check the status of a file
-func (ol *openload) GetFileInfo(fileId string) (file *file, err error) {
-  return file, err
+func (ol *openload) GetFileInfo(fileId string) (files []*file, err error) {
+  resp, err := ol.get(fmt.Sprintf("/file/info?login=%v&key=%v&file=%v", ol.login, ol.key, fileId))
+  if err != nil {
+    return files, err
+  }
+
+  if resp.Status != 200 {
+    return files, errors.New(resp.Msg)
+  }
+
+  body, err := json.Marshal(resp.Result)
+  if err != nil {
+    return files, err
+  }
+
+  if err = json.Unmarshal(body, &files); err != nil {
+    return files, err
+  }
+
+  return files, err
 }
 
 // Upload upload a file and get the upload URL

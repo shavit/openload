@@ -15,8 +15,6 @@ type ticket struct {
   VaildUntil string `json: "valid_until"`
 }
 
-type link struct {}
-
 type download struct {
   Name string `json: "name"`
   Size int `json: "size"`
