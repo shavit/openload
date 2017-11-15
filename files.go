@@ -133,8 +133,26 @@ func (ol *openload) GetUploadLimit(id string, maxResults int) (status []*uploadS
 }
 
 // ListFolder shows teh content of your folders
-func (ol *openload) ListFolder(folderId string) (folders []*folder, files []*file, err error) {
-  return folders, files, err
+func (ol *openload) ListFolder(folderId string) (folders []*folder, err error) {
+  resp, err := ol.get(fmt.Sprintf("/remotedl/status?login=%v&key=%v&folder=%v", ol.login, ol.key, folderId))
+  if err != nil {
+    return folders, err
+  }
+
+  if resp.Status != 200 {
+    return folders, errors.New(resp.Msg)
+  }
+
+  body, err := json.Marshal(resp.Result)
+  if err != nil {
+    return folders, err
+  }
+
+  if err = json.Unmarshal(body, &folders); err != nil {
+    return folders, err
+  }
+
+  return folders, err
 }
 
 // RenameFolder set a new name for an existing folder

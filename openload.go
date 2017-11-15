@@ -45,7 +45,7 @@ type Openload interface {
   GetUploadLimit(id string, maxResults int) (status []*uploadStatus, err error)
 
   // ListFolder shows teh content of your folders
-  ListFolder(folderId string) (folders []*folder, files []*file, err error)
+  ListFolder(folderId string) (folders []*folder, err error)
 
   // RenameFolder set a new name for an existing folder
   RenameFolder(folderId string, name string) (err error)

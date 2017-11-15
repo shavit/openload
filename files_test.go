@@ -74,14 +74,18 @@ func TestGetUploadLimit(t *testing.T){
 func TestListFolder(t *testing.T){
   var ol Openload = newTestOpenLoad()
   var folders []*folder
-  var files []*file
   var err error
   var folderId string = ""
 
-  folders, files, err = ol.ListFolder(folderId)
-  if err != nil || len(folders) != 0 || len(files) != 0 {
-    t.Error("Error listing folder:", err.Error)
+  folders, err = ol.ListFolder(folderId)
+  if err != nil {
+    t.Error("Error listing folder:", err.Error())
   }
+
+  if folders == nil {
+    t.Error("Found nil while getting folder list", folderId)
+  }
+
 }
 
 func TestRenameFolder(t *testing.T){
