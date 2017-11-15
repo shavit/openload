@@ -15,9 +15,28 @@ type file struct {
   ContentType string `json: "content_type"`
 }
 
-type folder struct {}
+type folder struct {
+  Id string `json: "id"`
+  FolderId string `json: "folderid"`
+}
 
-type uploadMeta struct {}
+type uploadLink struct {
+  Url string `json: "url"`
+  ValidUntil string `json: "valid_until"`
+}
+
+type uploadStatus struct {
+  Id int `json: "id"`
+  RemoteUrl string `json: "remoteurl"`
+  Status string `json: "status"`
+  BytesLoaded int `json: "bytes_loaded"`
+  BytesTotal int `json: "bytes_total"`
+  FolderId string `json: "folderid"`
+  Added string `json: "added"`
+  LastUpdate string `json: "last_update"`
+  Extid string `json: "extid"`
+  Url string `json: "url"`
+}
 
 type convertStatus struct {}
 
@@ -45,18 +64,72 @@ func (ol *openload) GetFileInfo(fileId string) (files []*file, err error) {
 }
 
 // Upload upload a file and get the upload URL
-func (ol *openload) Upload(folderId string, sha1 string) (u string, err error) {
+func (ol *openload) Upload(folderId string, sha1 string) (u *uploadLink, err error) {
+  resp, err := ol.get(fmt.Sprintf("file/ul?login=%v&key=%v&folder=%v&sha1=%v&httponly=false", ol.login, ol.key, folderId, sha1))
+  if err != nil {
+    return u, err
+  }
+
+  if resp.Status != 200 {
+    return u, errors.New(resp.Msg)
+  }
+
+  body, err := json.Marshal(resp.Result)
+  if err != nil {
+    return u, err
+  }
+
+  if err = json.Unmarshal(body, &u); err != nil {
+    return u, err
+  }
+
   return u, err
 }
 
 // RemoteUpload remote upload a file
-func (ol *openload) RemoteUpload(folderId string, url string) (err error) {
-  return err
+func (ol *openload) RemoteUpload(folderId string, url string) (f *folder, err error) {
+  resp, err := ol.get(fmt.Sprintf("/remotedl/add?login=%v&key=%v&folder=%v&url=%v", ol.login, ol.key, folderId, url))
+  if err != nil {
+    return f, err
+  }
+
+  if resp.Status != 200 {
+    return f, errors.New(resp.Msg)
+  }
+
+  body, err := json.Marshal(resp.Result)
+  if err != nil {
+    return f, err
+  }
+
+  if err = json.Unmarshal(body, &f); err != nil {
+    return f, err
+  }
+
+  return f, err
 }
 
 // GetUploadLimit check status of a remote upload
-func (ol *openload) GetUploadLimit(id string, maxResults int) (upload *uploadMeta, err error) {
-  return upload, err
+func (ol *openload) GetUploadLimit(id string, maxResults int) (status []*uploadStatus, err error) {
+  resp, err := ol.get(fmt.Sprintf("/remotedl/status?login=%v&key=%v&id=%v&limit=%v", ol.login, ol.key, id, maxResults))
+  if err != nil {
+    return status, err
+  }
+
+  if resp.Status != 200 {
+    return status, errors.New(resp.Msg)
+  }
+
+  body, err := json.Marshal(resp.Result)
+  if err != nil {
+    return status, err
+  }
+
+  if err = json.Unmarshal(body, &status); err != nil {
+    return status, err
+  }
+
+  return status, err
 }
 
 // ListFolder shows teh content of your folders

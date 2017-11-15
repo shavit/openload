@@ -22,14 +22,18 @@ func TestGetFileInfo(t *testing.T){
 
 func TestUpload(t *testing.T){
   var ol Openload = newTestOpenLoad()
-  var u string
+  var u *uploadLink
   var err error
-  var folderId string = ""
-  var sha1 string = ""
+  var folderId string
+  var sha1 string
 
   u, err = ol.Upload(folderId, sha1)
-  if err != nil || u != "" {
+  if err != nil {
     t.Error("Error uploading from folderId:", err.Error())
+  }
+
+  if u == nil {
+    t.Error("Found nil link while uploading a file")
   }
 }
 
@@ -37,24 +41,33 @@ func TestRemoteUpload(t *testing.T){
   var ol Openload = newTestOpenLoad()
   var folderId string
   var url string
+  var f *folder
   var err error
 
-  err = ol.RemoteUpload(folderId, url)
+  f, err = ol.RemoteUpload(folderId, url)
   if err != nil {
     t.Error("Error creating a remote upload:", err.Error())
+  }
+
+  if f == nil {
+    t.Error("Found nil folder while creating a remote upload for folder", folderId)
   }
 }
 
 func TestGetUploadLimit(t *testing.T){
   var ol Openload = newTestOpenLoad()
-  var upload *uploadMeta
+  var upload []*uploadStatus
   var err error
   var id string
   var maxResults int
 
   upload, err = ol.GetUploadLimit(id, maxResults)
-  if err != nil || upload != nil {
+  if err != nil {
     t.Error("Error getting the upload limit:", err.Error())
+  }
+
+  if len(upload) == 0 {
+    t.Error("Found 0 results while getting the upload limit", id)
   }
 }
 

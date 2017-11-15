@@ -36,13 +36,13 @@ type Openload interface {
   GetFileInfo(fileId string) (files []*file, err error)
 
   // Upload upload a file and get the upload URL
-  Upload(folderId string, sha1 string) (u string, err error)
+  Upload(folderId string, sha1 string) (u *uploadLink, err error)
 
   // RemoteUpload remote upload a file
-  RemoteUpload(folderId string, url string) (err error)
+  RemoteUpload(folderId string, url string) (f *folder, err error)
 
   // GetUploadLimit check status of a remote upload
-  GetUploadLimit(id string, maxResults int) (upload *uploadMeta, err error)
+  GetUploadLimit(id string, maxResults int) (status []*uploadStatus, err error)
 
   // ListFolder shows teh content of your folders
   ListFolder(folderId string) (folders []*folder, files []*file, err error)
