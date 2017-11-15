@@ -157,7 +157,7 @@ func (ol *openload) ListFolder(folderId string) (folders []*folder, err error) {
 
 // RenameFolder set a new name for an existing folder
 func (ol *openload) RenameFolder(folderId string, name string) (ok bool, err error) {
-  resp, err := ol.get(fmt.Sprintf("/file/renamefolder?login=%v&folder=%v&name=%v", ol.login, ol.key, folderId, name))
+  resp, err := ol.get(fmt.Sprintf("/file/renamefolder?login=%v&key=%v&folder=%v&name=%v", ol.login, ol.key, folderId, name))
   if err != nil {
     return ok, err
   }
@@ -180,7 +180,7 @@ func (ol *openload) RenameFolder(folderId string, name string) (ok bool, err err
 
 // RenameFile set a new name for a file
 func (ol *openload) RenameFile(fileId string, name string) (ok bool, err error) {
-  resp, err := ol.get(fmt.Sprintf("/file/rename?login=%v&file=%v&name=%v", ol.login, ol.key, fileId, name))
+  resp, err := ol.get(fmt.Sprintf("/file/rename?login=%v&key=%v&file=%v&name=%v", ol.login, ol.key, fileId, name))
   if err != nil {
     return ok, err
   }
@@ -203,7 +203,7 @@ func (ol *openload) RenameFile(fileId string, name string) (ok bool, err error) 
 
 // DeleteFile remove an existing file
 func (ol *openload) DeleteFile(fileId string) (ok bool, err error) {
-  resp, err := ol.get(fmt.Sprintf("/file/delete?login=%v&file=%v&name=%v", ol.login, ol.key, fileId))
+  resp, err := ol.get(fmt.Sprintf("/file/delete?login=%v&key=%v&file=%v", ol.login, ol.key, fileId))
   if err != nil {
     return ok, err
   }
@@ -226,7 +226,7 @@ func (ol *openload) DeleteFile(fileId string) (ok bool, err error) {
 
 // ConvertFile convert previously uploaded files to mp4
 func (ol *openload) ConvertFile(fileId string) (ok bool, err error) {
-  resp, err := ol.get(fmt.Sprintf("/file/convert?login=%v&file=%v&name=%v", ol.login, ol.key, fileId))
+  resp, err := ol.get(fmt.Sprintf("/file/convert?login=%v&key=%v&file=%v", ol.login, ol.key, fileId))
   if err != nil {
     return ok, err
   }
