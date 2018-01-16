@@ -1,0 +1,12 @@
+dist: trusty
+language: go
+
+duso: required
+env:
+  - GOOS=linux
+
+services:
+  - docker
+
+script:
+  docker build -t openload .
